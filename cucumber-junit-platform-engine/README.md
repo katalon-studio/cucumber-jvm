@@ -22,9 +22,11 @@ and execute Cucumber scenarios.
 Maven, Surefire and Gradle do not yet support discovery of non-class based tests
 (see: [gradle/#4773](https://github.com/gradle/gradle/issues/4773),
 [SUREFIRE-1724](https://issues.apache.org/jira/browse/SUREFIRE-1724)). As a
- workaround, you can either use the
-[JUnit Platform Suite Engine](https://junit.org/junit5/docs/current/user-guide/#junit-platform-suite-engine) 
-or the [JUnit Platform Console Launcher](https://junit.org/junit5/docs/current/user-guide/#running-tests-console-launcher).
+ workaround, you can either use:
+ * the [JUnit Platform Suite Engine](https://junit.org/junit5/docs/current/user-guide/#junit-platform-suite-engine);
+ * the [JUnit Platform Console Launcher](https://junit.org/junit5/docs/current/user-guide/#running-tests-console-launcher) or;
+ * the [Gradle Cucumber-Companion](https://github.com/gradle/cucumber-companion) plugins for Gradle and Maven.
+ * the [Cucable](https://github.com/trivago/cucable-plugin) plugin for Maven.
 
 ### Use the JUnit Platform Suite Engine
 
@@ -157,9 +159,6 @@ To select the scenario on line 10 of the `example.feature` file use:
 ```shell
 mvn test -Dsurefire.includeJUnit5Engines=cucumber -Dcucumber.plugin=pretty -Dcucumber.features=path/to/example.feature:10 
 ```
-
-Note: Add `-Dcucumber.plugin=pretty` to get test reports. Maven will not
-report on tests without a class.
 
 #### Gradle
 
@@ -340,7 +339,13 @@ cucumber.filter.name=                                          # a regular expre
 cucumber.features=                                             # comma separated paths to feature files. 
                                                                # example: path/to/example.feature, path/to/other.feature
                                                                # note: When used any discovery selectors from the JUnit
-                                                               # Platform will be ignored. Use with caution and care.
+                                                               # Platform will be ignored. This may lead to multiple
+                                                               # executions of Cucumber. For example when used in
+                                                               # combination with the JUnit Platform Suite Engine.
+                                                               # When using Cucumber through the JUnit Platform
+                                                               # Launcher API or the JUnit Platform Suite Engine, it is
+                                                               # recommended to respectively use JUnit's
+                                                               # DiscoverySelectors or equivalent annotations.
 
 cucumber.filter.tags=                                          # a cucumber tag expression.
                                                                # only scenarios with matching tags are executed.
@@ -528,6 +533,7 @@ import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import org.junit.platform.launcher.listeners.TestExecutionSummary.Failure;
 
 import java.util.List;
