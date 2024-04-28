@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.cucumber</groupId>
     <artifactId>cucumber-jvm</artifactId>
-    <version>3.0.2</version>
+    <version>3.0.3</version>
     <packaging>pom</packaging>
     <name>Cucumber-JVM</name>
     <description>Cucumber for the JVM</description>
@@ -89,7 +89,7 @@
         <tag-expressions.version>1.1.1</tag-expressions.version>
         <typetools.version>0.5.0</typetools.version>
         <cucumber-expressions.version>5.0.19</cucumber-expressions.version>
-        <datatable.version>1.0.3</datatable.version>
+        <datatable.version>1.1.15</datatable.version>
     </properties>
     <licenses>
         <license>
