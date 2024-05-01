@@ -552,15 +552,17 @@
     </pluginRepositories>
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>github</id>
+            <name>GitHub Apache Maven Release Packages</name>
+            <url>https://maven.pkg.github.com/katalon-studio/cucumber-jvm</url>
         </repository>
-    </distributionManagement>
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub Apache Maven Snapshots</name>
+            <url>https://maven.pkg.github.com/katalon-studio/cucumber-jvm</url>
+        </snapshotRepository>
+    </distributionManagement>    
 
     <modules>
         <module>core</module>
@@ -906,11 +908,6 @@
                         </analysisConfiguration>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>1.6.7</version>
-                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -926,64 +923,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce</id>
-                        <configuration>
-                            <rules>
-                                <requireJavaVersion>
-                                    <version>[1.8,)</version>
-                                </requireJavaVersion>
-                                <requireMavenVersion>
-                                    <version>[${minimum.maven.version},)</version>
-                                </requireMavenVersion>
-                                <requirePluginVersions>
-                                    <message>Best Practice is to always define plugin versions!</message>
-                                    <banLatest>true</banLatest>
-                                    <banRelease>true</banRelease>
-                                    <banSnapshots>true</banSnapshots>
-                                    <phases>clean,deploy,site</phases>
-                                </requirePluginVersions>
-                                <bannedDependencies>
-                                    <excludes>
-                                        <exclude>commons-logging</exclude>
-                                        <!-- use slf4j -->
-                                        <exclude>log4j</exclude>
-                                        <!-- use slf4j -->
-                                    </excludes>
-                                </bannedDependencies>
-                            </rules>
-                        </configuration>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
-                    <goals>deploy</goals>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <!--Manually review the non-snapshot artifacts for a while before automating the release -->
-                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                </configuration>
             </plugin>
         </plugins>
 
